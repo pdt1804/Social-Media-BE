@@ -1,156 +1,138 @@
 import React, {useState, useEffect} from 'react';
 import {
-    Text, 
-    View,
-    Image,
-    ImageBackground,
-    TouchableOpacity,
-    FlatList,
-    Keyboard,
-} from 'react-native'
-import {images, colors, icons, fontSizes} from '../../constants'
-import Icon from 'react-native-vector-icons/FontAwesome5'
-import { UIHeader } from '../../components'
-import MessengerItem from './MessengerItem'
-import { TextInput } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import {
-    auth,
-    onAuthStateChanged,
-    firebaseDatabaseRef,
-    firebaseSet,
-    firebaseDatabase
-} from '../../firebase/firebase'
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import MessengerItems from './MessengerItems';
+import {images, colors, fontSizes} from '../../constants';
+import {UIHeader} from '../../components';
+import Verification from '../Verification';
 
 function Messenger(props) {
-    const [typedText, setTypedText] = useState('')
-    const [chatHistory, setChatHistory] = useState([
-        {
-           url: 'https://randomuser.me/api/portraits/men/70.jpg',
-           showUrl: true,
-           isSender: true,           
-           messenger: "Hello",
-           timestamp: 1641654238000,
-        },
-        {
-            url: 'https://randomuser.me/api/portraits/men/70.jpg',
-            showUrl: false,
-            isSender: true,
-            messenger: "How are you ?",
-            timestamp: 1641654298000,
-         },
-         {             
-            url: 'https://randomuser.me/api/portraits/men/70.jpg',
-            showUrl: false,
-            isSender: true,
-            messenger: "How about your work ?. nujdhsfuhduf dhuhu uhuh uhfudhufduhu hufhfd",
-            timestamp: 1641654538000,
-         },
-         {
-            url: 'https://randomuser.me/api/portraits/men/50.jpg',
-            showUrl: true,
-            isSender: false,
-            messenger: "Yes",
-            timestamp: 1641654598000,
-         },
-         {
-            url: 'https://randomuser.me/api/portraits/men/50.jpg',
-            showUrl: false,
-            isSender: false,
-            messenger: "I am fine",
-            timestamp: 1641654598000,
-         },
-         {
-            url: 'https://randomuser.me/api/portraits/men/70.jpg',
-            showUrl: true,
-            isSender: true,
-            messenger: "Let's go out",
-            timestamp: 1641654778000,
-         },
-    ])    
-    const {url, name, userId} = props.route.params.user
-    const {navigate, goBack} = props.navigation
-    return <View style={{
-        flexDirection: 'column',
-        flex: 1,
-    }}>        
-        <UIHeader 
-            title={name} 
-            leftIconName={"arrow-left"}
-            rightIconName={"ellipsis-v"}
-            onPressLeftIcon={()=>{
-                goBack()
-            }}
-            onPressRightIcon={()=>{
-                alert('press right icon')
-            }}
-        />
-        
-        <FlatList style={{    
-            flex: 1,
-        }} 
-        data={chatHistory}
-        renderItem={({item}) => <MessengerItem             
-            onPress={()=> {                        
-                alert(`You press item's name: ${item.timestamp}`)
-            }}
-            item = {item} key={`${item.timestamp}`}/>}            
-        />
-        <View style={{
-            height: 50,            
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+  //list of example = state
+  const [chatHistory, setChatHistory] = useState([
+    {
+      imageUrl: 'https://i.pravatar.cc/500',
+      isSender: true,
+      message: 'Hello.',
+      timestamp: 1668135552,
+    },
+    {
+      imageUrl: 'https://i.pravatar.cc/505',
+      isSender: false,
+      message: 'Hi. How are you?',
+      timestamp: 1696993152,
+    },
+    {
+      imageUrl: 'https://i.pravatar.cc/500',
+      isSender: true,
+      message: 'Im fine thank you, and you?',
+      timestamp: 1699585152,
+    },
+    {
+      imageUrl: 'https://i.pravatar.cc/505',
+      isSender: false,
+      message: 'No.',
+      timestamp: 1699667952,
+    },
+    {
+      imageUrl: 'https://i.pravatar.cc/505',
+      isSender: false,
+      message: 'Im in heaven.',
+      timestamp: 1699671552,
+    },
+  ]);
+
+  //list of tabs = state
+  const [navigateTab, setNavigateTab] = useState('')
+  const [chatTab, setChatTab] = useState([
+    {
+      ID: '0',
+      name: 'Trò chuyện',
+    },
+    {
+      ID: '1',
+      name: 'Nhóm trưởng',
+    },
+    {
+      ID: '2',
+      name: 'Thảo luận',
+    },
+    {
+      ID: '3',
+      name: 'Thông báo',
+    },
+  ]);
+
+  const {imageUrl, name} = props.route.params.user;
+
+  //navigation
+  const {navigation, route} = props;
+  //function of navigation to/back
+  const {navigate, goBack} = navigation;
+
+  return (
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+      <UIHeader
+        title={name}
+        leftIconName={images.backIcon}
+        rightIconName={images.pencilIcon}
+        onPressLeftIcon={() => {
+          /* alert('To the previous screen'); */
+          goBack();
+        }}
+        onPressRightIcon={() => {
+          alert('Edit profile');
+        }}
+      />
+
+      <View
+        style={{
+          height: 50,
         }}>
-            <TextInput
-                onChangeText={(typedText) => {
-                    setTypedText(typedText)
-                }}
+        <FlatList
+          horizontal={true}
+          data={chatTab}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => setNavigateTab(item.ID)}
                 style={{
+                  padding: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
                     color: 'black',
-                    paddingStart: 10,
-                }}
-                placeholder='Enter your message here'
-                value={typedText}
-                placeholderTextColor={colors.placeholder}
-            />
-            <TouchableOpacity onPress={async ()=>{
-                if(typedText.trim().length == 0) {
-                    return
-                }                
-                 debugger
-                 let stringUser = await AsyncStorage.getItem("user")
-                 let myUserId = JSON.parse(stringUser).userId
-                 let myFriendUserId = props.route.params.user.userId
-                 //save to Firebase DB
-                 let newMessengerObject = {
-                    //fake
-                    url: 'https://randomuser.me/api/portraits/men/50.jpg',
-                    showUrl: false,                    
-                    messenger: typedText,
-                    timestamp: (new Date()).getTime(),
-                 } 
-                 Keyboard.dismiss()                
-                 firebaseSet(firebaseDatabaseRef(
-                    firebaseDatabase,
-                    `chats/${myUserId}-${myFriendUserId}`
-                ), newMessengerObject).then(()=>{
-                    setTypedText('')
-                })
-                
-                 //"id1-id2": {messenger object}
-            }}>
-                <Icon
-                    style={{
-                        padding: 10,
-                    }}
-                    name='paper-plane' size={20} color={colors.primary} />
-            </TouchableOpacity>
-        </View>
+                    fontSize: fontSizes.h6,
+                    paddingVertical: 7,
+                    paddingHorizontal: 17,
+                    backgroundColor: colors.message,
+                    borderRadius: 3,
+                  }}>
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={item => item.name}
+          style={{flex: 1}}></FlatList>
+      </View>
+
+      <ScrollView>
+        {chatHistory.map(eachItem => (
+          <MessengerItems item={eachItem} />
+        ))}
+      </ScrollView>
     </View>
+  );
 }
-export default Messenger
+export default Messenger;
