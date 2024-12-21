@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,12 +35,12 @@ public class Comment {
 	private String Content;
 	private Date dateComment;
 	@ManyToOne
-	@JoinColumn(name = "user_comment_ID", nullable = true)
+	@JoinColumn(name = "user_comment_ID")
 	private User userComment;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "blog_comment_ID", nullable = true)
 	@JsonIgnore
 	private Blog blog;
-	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "comment")
 	private List<Reply> replies = new ArrayList<>();
 }
