@@ -1,6 +1,9 @@
 package com.example.demo.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.Token;
+import com.example.demo.entities.Topic;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.JwtService;
 import com.example.demo.services.RecoveryCodeService;
+import com.example.demo.services.TopicService;
 import com.example.demo.services.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -27,6 +33,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TopicService topicService;
 	
 	@Autowired
 	private RecoveryCodeService recoveryCodeService;
@@ -77,7 +86,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/CreateAccount")
-	public String CreateAccount(@RequestParam("userName") String userName, @RequestParam("passWord") String passWord, @RequestParam("email") String email, @RequestParam("image") String image)
+	public Token CreateAccount(@RequestParam("userName") String userName, @RequestParam("passWord") String passWord, @RequestParam("email") String email, @RequestParam("image") String image)
 	{
 		
 		var user = new User();
