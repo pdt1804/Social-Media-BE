@@ -27,6 +27,7 @@ import com.example.demo.services.BlogService;
 import com.example.demo.services.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Synchronized;
 
 @RestController
 @RequestMapping("/api/v1/blog")
@@ -64,9 +65,12 @@ public class BlogController {
 	}
 	
 	@PostMapping("/insertImageInBlog")
+	@Synchronized
 	public void insertImageInBlog(@RequestParam("blogID") long blogID, @RequestParam("file") MultipartFile file)
 	{
 		blogService.insertImageInBlog(blogID, file);
+		//System.out.println("finish");
+		//ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/getBlogById")
@@ -175,9 +179,21 @@ public class BlogController {
 //	}
 	
 	@PutMapping("/updateBlog") 
-	public void updateBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, @RequestParam("requestImages") List<UpdateBlogRequest> requests) throws java.io.IOException
+	public void updateBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, @RequestParam("addNewFiles") List<MultipartFile> newFiles, @RequestParam("removeOldFiles") List<String> oldFiles) throws java.io.IOException
 	{
-		blogService.updateBlog(blogID, content, requests);
+		blogService.updateBlog(blogID, content, newFiles, oldFiles);
+	}
+	
+	@PutMapping("/updateBlogRemovingImage") 
+	public void updateBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, @RequestParam("removeOldFiles") List<String> oldFiles) throws java.io.IOException
+	{
+		blogService.updateBlogRemovingImage(blogID, content, oldFiles);
+	}
+	
+	@PutMapping("/updateBlogContent") 
+	public void updateBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content) throws java.io.IOException
+	{
+		blogService.updateBlogContent(blogID, content);
 	}
 	
 	@DeleteMapping("/deleteBlog")
@@ -206,9 +222,9 @@ public class BlogController {
 	}*/
 	
 	@PostMapping("/commentBlog")
-	public int commentBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, HttpServletRequest request , @RequestParam("userNames") List<String> userNames, @RequestParam("files") List<MultipartFile> files) throws IOException
+	public int commentBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, HttpServletRequest request , @RequestParam("userNames") List<String> userNames) throws IOException
 	{
-		return blogService.commentBlog(blogID, extractTokenToGetUsername(request), content, userNames, files);
+		return blogService.commentBlog(blogID, extractTokenToGetUsername(request), content, userNames);
 	}
 	
 	@PostMapping("/insertImageInComment")
@@ -230,9 +246,9 @@ public class BlogController {
 	}
 	
 	@PostMapping("/replyComment")
-	public int replyComment(@RequestParam("commentID") int commentID, HttpServletRequest request, @RequestParam("content") String content, @RequestParam("userNames") List<String> userNames, @RequestParam("files") List<MultipartFile> files) throws IOException
+	public int replyComment(@RequestParam("commentID") int commentID, HttpServletRequest request, @RequestParam("content") String content, @RequestParam("userNames") List<String> userNames) throws IOException
 	{
-		return blogService.replyComment(commentID, extractTokenToGetUsername(request), content, userNames, files);
+		return blogService.replyComment(commentID, extractTokenToGetUsername(request), content, userNames);
 	}
 	
 	@PostMapping("/insertImageInReply")
