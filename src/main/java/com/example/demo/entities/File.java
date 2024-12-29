@@ -32,6 +32,26 @@ public class File {
 	@JoinColumn(name = "notificationID", nullable = true)
 	@JsonIgnore
 	private Notifycation notifycation;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "commentID", nullable = true)
+	@JsonIgnore
+	private Comment comment;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "replyID", nullable = true)
+	@JsonIgnore
+	private Reply reply;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "messageGroupID", nullable = true)
+	@JsonIgnore
+	private MessageGroup messageGroup;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "messageUserID", nullable = true)
+	@JsonIgnore
+	private MessageUser messageUser;
 	
 	public File(String url, String publicId, Blog blog)
 	{
@@ -40,6 +60,10 @@ public class File {
 		this.blog = blog;
 		
 		notifycation = null;
+		comment = null;
+		reply = null;
+		messageGroup = null;
+		messageUser = null;
 	}
 	
 	public File(String url, String publicId, Notifycation notifycation)
@@ -49,6 +73,62 @@ public class File {
 		this.notifycation = notifycation;
 		
 		blog = null;
+		comment = null;
+		reply = null;
+		messageGroup = null;
+		messageUser = null;
+	}
+	
+	public File(String url, String publicId, Comment comment)
+	{
+		this.url = url;
+		this.publicId = publicId;
+		this.comment = comment;
+		
+		blog = null;
+		notifycation = null;
+		reply = null;
+		messageUser = null;
+		messageGroup = null;
+	}
+	
+	public File(String url, String publicId, Reply reply)
+	{
+		this.url = url;
+		this.publicId = publicId;
+		this.reply = reply;
+		
+		blog = null;
+		notifycation = null;
+		comment = null;
+		messageGroup = null;
+		messageUser = null;
+	}
+	
+	public File(String url, String publicId, MessageGroup mess)
+	{
+		this.url = url;
+		this.publicId = publicId;
+		this.messageGroup = mess;
+		
+		blog = null;
+		notifycation = null;
+		comment = null;
+		reply = null;
+		messageUser = null;
+	}
+	
+	public File(String url, String publicId, MessageUser mess)
+	{
+		this.url = url;
+		this.publicId = publicId;
+		this.messageUser = mess;
+		
+		blog = null;
+		notifycation = null;
+		comment = null;
+		reply = null;
+		messageGroup = null;
 	}
 	
 }
