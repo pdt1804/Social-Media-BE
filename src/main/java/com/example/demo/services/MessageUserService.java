@@ -55,13 +55,15 @@ public class MessageUserService implements MessageUserManagement{
 		return messageUserRepository.getById(id).getSentUser();
 	}
 	
-	public void uploadFileToCloudinary(MultipartFile file, long messID) throws IOException
+	public void uploadFileToCloudinary(MultipartFile file, long messID, int width, int height) throws IOException
 	{
 		try
 		{
 			var mess = messageUserRepository.getById(messID);
 			Map<String, String> data = cloudinary.uploader().upload(file.getBytes(), Map.of());
 			File f = new File(data.get("url"), data.get("public_id"), mess);
+			f.setHeight(height);
+			f.setWidth(width);
 			fileRepository.save(f);
 			mess.getFiles().add(f);
 			messageUserRepository.save(mess);
@@ -201,7 +203,7 @@ public class MessageUserService implements MessageUserManagement{
 			}
 		}
 		
-		return listMessageUser.stream().sorted((m1,m2) -> m1.getDateSent().compareTo(m2.getDateSent())).collect(Collectors.toList());
+		return listMessageUser.stream().sorted((m1,m2) -> m2.getDateSent().compareTo(m1.getDateSent())).collect(Collectors.toList());
 	}
 	
 	@Override
