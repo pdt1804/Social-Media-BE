@@ -59,12 +59,6 @@ public class InformationController {
 //		return topicService.getAllTopics();
 //	}
 	
-	@GetMapping("/getAllChatbots")
-	public List<User> getAllChatbots()
-	{
-		return informationService.getAllChatbots();
-	}
-	
 	@GetMapping("/getAllFavoriteTopics")
 	public List<Topic> getAllFavoriteTopics(@RequestParam("infoID") int infoID)
 	{

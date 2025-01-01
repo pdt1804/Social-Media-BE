@@ -57,7 +57,7 @@ public class DocumentService implements DocumentManagement {
 	}
 	 
 	@Override
-	public int addDocument(MultipartFile file ,int groupID, String userName, String fileName)
+	public int addDocument(MultipartFile file ,int groupID, String userName)
 	{
 		String name = file.getOriginalFilename();
 		DocumentType type;
@@ -78,9 +78,7 @@ public class DocumentService implements DocumentManagement {
 		{
 
 			Random rd = new Random();
-			//String nameOnCloud = file.getName() + "-" + "-" + rd.nextInt(1, 9999999) + "-" + UUID.randomUUID();
-			String nameOnCloud = fileName;
-
+			String nameOnCloud = file.getName() + "-" + "-" + rd.nextInt(1, 9999999) + "-" + UUID.randomUUID();
 			String url = "https://firebasestorage.googleapis.com/v0/b/findingfriendapplication.appspot.com/o/" + nameOnCloud + "?alt=media";
 			
 			var user = userRepository.getById(userName);

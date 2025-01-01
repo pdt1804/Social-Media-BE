@@ -22,7 +22,6 @@ import com.example.demo.entities.Notifycation;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.FileRepository;
 import com.example.demo.repositories.FriendShipRepository;
-import com.example.demo.repositories.GroupStudyingRepository;
 import com.example.demo.repositories.MessageUserRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.serviceInterfaces.MessageUserManagement;
@@ -43,9 +42,6 @@ public class MessageUserService implements MessageUserManagement{
 	
 	@Autowired 
 	private FriendShipRepository friendShipRepository;
-
-	@Autowired 
-	private GroupStudyingRepository groupStudyingRepository;
 	
 	@Autowired
 	private Cloudinary cloudinary;
@@ -78,33 +74,6 @@ public class MessageUserService implements MessageUserManagement{
 		}
 	}
 	
-	public String retrievingInformationGroup()
-	{
-		StringBuilder builder = new StringBuilder();
-		for (var p : groupStudyingRepository.findAll())
-		{
-			String groupInfo = "Nhóm có tên là " + p.getNameGroup() + " có các chủ đề như " + p.getTopics().get(0).topicName;
-			
-			for (int i = 1; i < p.getTopics().size(); i++)
-			{
-				groupInfo = groupInfo + ", " + p.getTopics().get(i).topicName;
-			}
-			
-			if (p.getPassWord().length() == 0)
-			{
-				groupInfo = groupInfo + ". Trạng thái của nhóm là công khai.";
-			}
-			else
-			{
-				groupInfo = groupInfo + ". Trạng thái của nhóm là riêng tư.";
-			}
-			groupInfo = groupInfo + "\n";
-			builder.append(groupInfo);
-		}
-		
-		return builder.toString();
-	}
-	
 	@Override
 	public long sendMessage(MessageUser mess, String fromUserName, String toUserName)
 	{
@@ -112,7 +81,7 @@ public class MessageUserService implements MessageUserManagement{
 		{
 			System.out.println("reach");
 
-			if (toUserName.contains("Chatbot") || fromUserName.contains("Chatbot"))
+			if (toUserName.equals("Chatbot") || fromUserName.equals("Chatbot"))
 			{
 				var fromUser = userRepository.getById(fromUserName);
 				var toUser = userRepository.getById(toUserName);
@@ -190,11 +159,11 @@ public class MessageUserService implements MessageUserManagement{
 	}
 	
 	@Override
-	public long saveChatBotMessage(MessageUser mess, String toUserName, String ChatbotUserName)
+	public long saveChatBotMessage(MessageUser mess, String toUserName)
 	{
 		try 
 		{
-			var fromUser = userRepository.getById(ChatbotUserName);
+			var fromUser = userRepository.getById("Chatbot");
 			var toUser = userRepository.getById(toUserName);
 			
 			mess.setStatus(MessageUserStatus.seen);
@@ -234,11 +203,7 @@ public class MessageUserService implements MessageUserManagement{
 			}
 		}
 		
-		if (fromUserName.contains("Chatbot") || toUserName.contains("Chatbot"))
-		{
-			return listMessageUser.stream().sorted((m1,m2) -> m1.getDateSent().compareTo(m2.getDateSent())).collect(Collectors.toList());
-		}
-		return listMessageUser.stream().sorted((m1,m2) -> m2.getDateSent().compareTo(m1.getDateSent())).collect(Collectors.toList());
+		return listMessageUser.stream().sorted((m1,m2) -> m1.getDateSent().compareTo(m2.getDateSent())).collect(Collectors.toList());
 	}
 	
 	@Override

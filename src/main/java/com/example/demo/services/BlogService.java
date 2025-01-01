@@ -203,15 +203,13 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 	
 	@Override
 	@Synchronized
-	public void insertImageInBlog(long blogID, MultipartFile file, int width, int height)
+	public void insertImageInBlog(long blogID, MultipartFile file)
 	{
 		try
 		{
 			var blog = blogRepository.getById(blogID);
 			Map<String, String> data = this.cloudinary.uploader().upload(file.getBytes(), Map.of());
 			File f = new File(data.get("url").toString(), data.get("public_id").toString(), blog);
-			f.setWidth(width);
-			f.setHeight(height);
 			fileRepository.save(f);
 			blog.getFiles().add(f);
 			blogRepository.save(blog);
@@ -759,7 +757,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 				 .Content(userTag.getInformation().getFulName() + " tag bạn vào " + typeName + " trong nhóm " + group.getNameGroup() + ".")
 				 .Header("Bạn đã được tag tên !!!").contentID(id)
 				 .groupStudying(group)
-				 .dateSent(new Date()).notifycationType(NotifycationType.admin).build();
+				 .dateSent(new Date()).notifycationType(NotifycationType.user).build();
 				
 		if (notifycation.getUserSeenNotifycation() == null) notifycation.setUserSeenNotifycation(new ArrayList<>());
 		if (notifycation.getUsers() == null) notifycation.setUsers(new ArrayList<>());
