@@ -198,7 +198,6 @@ public class GroupStudyingService implements GroupManagement {
 	{
 		var listGroup = groupStudyingRepository.findAll().stream().filter(p -> p.getNameGroup().toLowerCase().contains(nameGroup.toLowerCase()) && p.getUsers().size() > 0).collect(Collectors.toList());
 		listGroup.removeAll(userRepository.getById(userName).getGroups());
-		
 		return listGroup;
 	}
 
@@ -290,6 +289,13 @@ public class GroupStudyingService implements GroupManagement {
 		return filterGroups;
 	}
 	
+	public String getLastMessageOfGroup(int groupID)
+	{
+		var messList = groupStudyingRepository.getById(groupID).getMessages();
+		var mess = messList.get(messList.size() - 1);
+		return mess.getUser().getInformation().getFulName() + ": " + mess.getContent();
+	}
+	
 	public List<GroupStudying> filterGroupByTopic(String userName, Integer topic)
 	{
 		var filterGroups = new ArrayList<GroupStudying>();
@@ -298,6 +304,11 @@ public class GroupStudyingService implements GroupManagement {
 		
 		for(var p : allGroups)
 		{
+			if (p.getUsers().size() == 0)
+			{
+				continue;
+			}
+			
 			if (CheckGroupByTopic(p, topic))
 			{
 				filterGroups.add(p);
