@@ -98,7 +98,7 @@ public class MessageGroupService implements MessageGroupManagement {
 //				
 //				obj.getImages().add(nameOnCloud);
 				
-				//uploadOneFileToCloudinary(groupID, file, userName);
+				uploadOneFileToCloudinary(groupID, file, userName);
 			}
 			
 			//messageGroupRepository.save(obj);
@@ -106,7 +106,7 @@ public class MessageGroupService implements MessageGroupManagement {
 	}
 	
 	@Synchronized
-	public void uploadOneFileToCloudinary(long messID, MultipartFile file, String userName, int width, int height) throws IOException
+	public void uploadOneFileToCloudinary(long messID, MultipartFile file, String userName) throws IOException
 	{
 		try
 		{
@@ -114,8 +114,6 @@ public class MessageGroupService implements MessageGroupManagement {
 			var mess = messageGroupRepository.getById(messID);
 			Map<String, String> data = cloudinary.uploader().upload(file.getBytes(), Map.of());
 			File f = new File(data.get("url"), data.get("public_id"), mess);
-			f.setHeight(height);
-			f.setWidth(width);
 			fileRepository.save(f);		
 			mess.getFiles().add(f);
 			messageGroupRepository.save(mess);
@@ -136,7 +134,7 @@ public class MessageGroupService implements MessageGroupManagement {
 		lastMess.get().getStatusMessageWithUsers().remove(userRepository.getById(myUserName));
 		messageGroupRepository.save(lastMess.get());
 		
-		var listMessage = group.getMessages().stream().sorted((d1,d2) -> d2.getDateSent().compareTo(d1.getDateSent())).collect(Collectors.toList());
+		var listMessage = group.getMessages().stream().sorted((d1,d2) -> d1.getDateSent().compareTo(d2.getDateSent())).collect(Collectors.toList());
 		return listMessage.size() != 0 ? listMessage : null;
 	}
 	

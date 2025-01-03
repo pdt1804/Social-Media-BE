@@ -203,15 +203,13 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 	
 	@Override
 	@Synchronized
-	public void insertImageInBlog(long blogID, MultipartFile file, int width, int height)
+	public void insertImageInBlog(long blogID, MultipartFile file)
 	{
 		try
 		{
 			var blog = blogRepository.getById(blogID);
 			Map<String, String> data = this.cloudinary.uploader().upload(file.getBytes(), Map.of());
 			File f = new File(data.get("url").toString(), data.get("public_id").toString(), blog);
-			f.setWidth(width);
-			f.setHeight(height);
 			fileRepository.save(f);
 			blog.getFiles().add(f);
 			blogRepository.save(blog);
@@ -387,24 +385,24 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		}
 	}
 	
-	public void UploadImageToCloudinaryForBlog(long id, MultipartFile file, int width, int height) throws java.io.IOException
+	public void UploadImageToCloudinaryForBlog(long id, MultipartFile file) throws java.io.IOException
 	{
 		if (file == null) return;
-		else cloudinaryService.uploadFilesBlog(file, id, width, height);
+		else cloudinaryService.uploadFilesBlog(file, id);
 	}
 	
 	@Synchronized
-	public void UploadImageToCloudinaryForComment(int id, MultipartFile file, int width, int height) throws java.io.IOException
+	public void UploadImageToCloudinaryForComment(int id, MultipartFile file) throws java.io.IOException
 	{
 		if (file == null) return;
-		else cloudinaryService.uploadFilesComment(file, id, width, height);
+		else cloudinaryService.uploadFilesComment(file, id);
 	}
 	
 	@Synchronized
-	public void UploadImageToCloudinaryForReply(int id, MultipartFile file, int width, int height) throws java.io.IOException
+	public void UploadImageToCloudinaryForReply(int id, MultipartFile file) throws java.io.IOException
 	{
 		if (file == null) return;
-		else cloudinaryService.uploadFilesReply(file, id, width, height);
+		else cloudinaryService.uploadFilesReply(file, id);
 	}
 	
 	private void UploadImageToFirebaseForComment(int id, List<MultipartFile> files) throws java.io.IOException
@@ -422,7 +420,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 //				
 //				obj.getImages().add(nameOnCloud);
 				
-				//UploadImageToCloudinaryForComment(id, file);
+				UploadImageToCloudinaryForComment(id, file);
 			}
 			
 			//commentRepository.save(obj);
@@ -444,7 +442,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 //				
 //				obj.getImages().add(nameOnCloud);
 				
-				//UploadImageToCloudinaryForReply(id, file);
+				UploadImageToCloudinaryForReply(id, file);
 			}
 			
 			//replyRepository.save(obj);
@@ -533,7 +531,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 	}
 	
 	private void ExecuteAddFileBlogRequest(Blog blog, MultipartFile p) throws java.io.IOException {
-		//UploadImageToCloudinaryForBlog(blog.getBlogID(), p);
+		UploadImageToCloudinaryForBlog(blog.getBlogID(), p);
 	}
 	
 	private void ExecuteRemoveFileBlogRequest(Blog blog, String url) throws java.io.IOException {
@@ -759,7 +757,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 				 .Content(userTag.getInformation().getFulName() + " tag bạn vào " + typeName + " trong nhóm " + group.getNameGroup() + ".")
 				 .Header("Bạn đã được tag tên !!!").contentID(id)
 				 .groupStudying(group)
-				 .dateSent(new Date()).notifycationType(NotifycationType.admin).build();
+				 .dateSent(new Date()).notifycationType(NotifycationType.user).build();
 				
 		if (notifycation.getUserSeenNotifycation() == null) notifycation.setUserSeenNotifycation(new ArrayList<>());
 		if (notifycation.getUsers() == null) notifycation.setUsers(new ArrayList<>());

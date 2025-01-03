@@ -66,9 +66,9 @@ public class BlogController {
 	
 	@PostMapping("/insertImageInBlog")
 	@Synchronized
-	public void insertImageInBlog(@RequestParam("blogID") long blogID, @RequestParam("file") MultipartFile file, @RequestParam("width") int width, @RequestParam("height") int height)
+	public void insertImageInBlog(@RequestParam("blogID") long blogID, @RequestParam("file") MultipartFile file)
 	{
-		blogService.insertImageInBlog(blogID, file, width, height);
+		blogService.insertImageInBlog(blogID, file);
 		//System.out.println("finish");
 		//ResponseEntity.ok().build();
 	}
@@ -166,12 +166,10 @@ public class BlogController {
 	
 	@PostMapping(value = "/uploadImage")
 	public void uploadBlogImage(@RequestParam("blogID") int blogID, 
-				     			@RequestParam("file") MultipartFile file, 
-				     			@RequestParam("width") int width, 
-				     			@RequestParam("height") int height) throws IOException
+				     			@RequestParam("file") MultipartFile file) throws IOException
 	{
 		System.out.println(file);
-		blogService.UploadImageToCloudinaryForBlog(blogID, file, width, height);
+		blogService.UploadImageToCloudinaryForBlog(blogID, file);
 	}
 	
 //	@PostMapping("/insertImage")
@@ -230,9 +228,9 @@ public class BlogController {
 	}
 	
 	@PostMapping("/insertImageInComment")
-	public void insertImageInComment(@RequestParam("commentID") int commentID, @RequestParam("file") MultipartFile file, @RequestParam("width") int width, @RequestParam("height") int height) throws IOException
+	public void insertImageInComment(@RequestParam("commentID") int commentID, @RequestParam("file") MultipartFile file) throws IOException
 	{
-		blogService.UploadImageToCloudinaryForComment(commentID, file, width, height);
+		blogService.UploadImageToCloudinaryForComment(commentID, file);
 	}
 	
 	@PutMapping("/updateComment")
@@ -254,9 +252,9 @@ public class BlogController {
 	}
 	
 	@PostMapping("/insertImageInReply")
-	public void insertImageInReply(@RequestParam("replyID") int replyID, @RequestParam("file") MultipartFile file, @RequestParam("width") int width, @RequestParam("height") int height) throws IOException
+	public void insertImageInReply(@RequestParam("replyID") int replyID, @RequestParam("file") MultipartFile file) throws IOException
 	{
-		blogService.UploadImageToCloudinaryForReply(replyID, file, width, height);
+		blogService.UploadImageToCloudinaryForReply(replyID, file);
 	}
 	
 	@PutMapping("/updateReply")

@@ -5,14 +5,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -32,13 +30,12 @@ public class Review {
 	private Date dateCreated;
 	private Date dateEdited;
 	@Lob
-	@Column(columnDefinition = "TEXT")
 	private String content;
 	private double rating;
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "userName")
 	private User reviewer;
-	@ManyToOne
+	@OneToOne
 	@JsonIgnore
 	@JoinColumn(name = "groupID")
 	private GroupStudying group;

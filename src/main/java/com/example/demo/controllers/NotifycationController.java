@@ -55,9 +55,9 @@ public class NotifycationController {
 	}
 	
 	@PostMapping("/insertImage")
-	public void insertImage(@RequestParam("notificationID") int notificationID, @RequestParam("image") MultipartFile image, @RequestParam("width") int width, @RequestParam("height") int height)
+	public void insertImage(@RequestParam("notificationID") int notificationID, @RequestParam("image") MultipartFile image)
 	{
-		notifycationService.insertImage(notificationID, image, width, height);
+		notifycationService.insertImage(notificationID, image);
 	}
 	
 	@GetMapping("/getAllNotifycationbyGroupID")

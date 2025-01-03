@@ -22,8 +22,6 @@ public class File {
 	@Id
 	private String url;
 	private String publicId;
-	private int height;
-	private int width;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "blogID", nullable = true)
