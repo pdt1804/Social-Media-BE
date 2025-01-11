@@ -66,9 +66,9 @@ public class BlogController {
 	
 	@PostMapping("/insertImageInBlog")
 	@Synchronized
-	public void insertImageInBlog(@RequestParam("blogID") long blogID, @RequestParam("file") MultipartFile file, @RequestParam("width") int width, @RequestParam("height") int height)
+	public void insertImageInBlog(@RequestParam("blogID") long blogID, @RequestParam("file") MultipartFile file)
 	{
-		blogService.insertImageInBlog(blogID, file, width, height);
+		blogService.insertImageInBlog(blogID, file);
 		//System.out.println("finish");
 		//ResponseEntity.ok().build();
 	}
