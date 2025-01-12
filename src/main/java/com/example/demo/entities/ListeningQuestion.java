@@ -16,11 +16,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Question {
+public class ListeningQuestion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	private String video;
 	private String question;
 	private String answerA;
 	private String answerB;
@@ -28,7 +29,4 @@ public class Question {
 	private String answerD;
 	private String correctAnswer;
 	
-	@ManyToOne
-	@JoinColumn(name = "title_id")
-	private Title title;
 }

@@ -1,13 +1,9 @@
 package com.example.demo.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +14,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Title {
-
+public class ImageQuestion {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private long id;
-	private String titleName;
-	
-	@OneToMany(mappedBy = "title")
-	private List<Question> questions = new ArrayList<>();
+	private String image1;
+	private String image2;
+	private String answer;
 }
