@@ -98,7 +98,7 @@ public class CloudinaryService {
 		}
 	}
 	
-	public void uploadFilesComment(MultipartFile file, int cmtID, int width, int height)
+	public void uploadFilesComment(MultipartFile file, long cmtID, int width, int height)
 	{
 		try
 		{
@@ -117,7 +117,7 @@ public class CloudinaryService {
 		}
 	}
 	
-	public void uploadFilesReply(MultipartFile file, int blogID, int width, int height)
+	public void uploadFilesReply(MultipartFile file, long blogID, int width, int height)
 	{
 		try
 		{

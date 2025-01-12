@@ -33,7 +33,7 @@ public class Blog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int blogID;
+	private long blogID;
 	@Column(columnDefinition = "TEXT")
 	private String Content;
 	//private List<String> image = new ArrayList<String>();

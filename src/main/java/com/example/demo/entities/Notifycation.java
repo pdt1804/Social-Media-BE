@@ -39,7 +39,7 @@ public class Notifycation {
     private Date dateSent;
     private NotifycationType notifycationType;
     //private List<String> images = new ArrayList<>();
-    private int contentID;
+    private long contentID;
     private String publicID;
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = true)

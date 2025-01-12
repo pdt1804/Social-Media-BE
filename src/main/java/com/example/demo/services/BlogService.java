@@ -407,7 +407,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		else cloudinaryService.uploadFilesReply(file, id, width, height);
 	}
 	
-	private void UploadImageToFirebaseForComment(int id, List<MultipartFile> files) throws java.io.IOException
+	private void UploadImageToFirebaseForComment(long id, List<MultipartFile> files) throws java.io.IOException
 	{
 		Comment obj = commentRepository.getById(id);;
 		
@@ -429,7 +429,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		}
 	}
 	
-	private void UploadImageToFirebaseForReply(int id, List<MultipartFile> files) throws java.io.IOException
+	private void UploadImageToFirebaseForReply(long id, List<MultipartFile> files) throws java.io.IOException
 	{
 		Reply obj = replyRepository.getById(id);;
 		
@@ -577,7 +577,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 	
 
 	@Override
-	public int commentBlog(long blogID, String userName, String content, List<String> userNames) throws java.io.IOException
+	public long commentBlog(long blogID, String userName, String content, List<String> userNames) throws java.io.IOException
 	{
 		var blog = blogRepository.getById(blogID);
 		var sentUser = userRepository.getById(userName);
@@ -618,7 +618,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		return cmt.getCommentID();
 	}
 	
-	public void updateComment(int commentID, Comment cmt)
+	public void updateComment(long commentID, Comment cmt)
 	{
 		var existingComment = commentRepository.getById(commentID);
 		existingComment.setContent(cmt.getContent());
@@ -626,7 +626,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		commentRepository.save(existingComment);
 	}
 	
-	public void deleteComment(int commentID) throws java.io.IOException
+	public void deleteComment(long commentID) throws java.io.IOException
 	{
 		var cmt = commentRepository.getById(commentID);
 		cmt.setBlog(null);
@@ -650,13 +650,13 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 	}
 	
 	@Override
-	public List<Reply> getAllReplyOfComment(int commentID)
+	public List<Reply> getAllReplyOfComment(long commentID)
 	{
 		return commentRepository.getById(commentID).getReplies();
 	}
 	
 	@Override
-	public int replyComment(int commentID, String userName, String content, List<String> userNames) throws java.io.IOException
+	public long replyComment(long commentID, String userName, String content, List<String> userNames) throws java.io.IOException
 	{
 		var cmt = commentRepository.getById(commentID);
 		var sentUser = userRepository.getById(userName);
@@ -697,7 +697,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		return reply.getReplyID();
 	}
 	
-	public void updateReply(int replyID, Reply reply)
+	public void updateReply(long replyID, Reply reply)
 	{
 		var existingReply = replyRepository.getById(replyID);
 		existingReply.setContent(reply.getContent());
@@ -705,7 +705,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 		replyRepository.save(existingReply);
 	}
 	
-	public void deleteReply(int replyID) throws java.io.IOException
+	public void deleteReply(long replyID) throws java.io.IOException
 	{
 		var reply = replyRepository.getById(replyID);
 		reply.setUserReplied(null);
@@ -744,7 +744,7 @@ public class BlogService implements SubjectManagement, BlogManagement, CommentMa
 //		}
 //	}
 
-	private void sendNotification(List<String> userNames, String userNameTag, int id, TagType type, GroupStudying group)
+	private void sendNotification(List<String> userNames, String userNameTag, long id, TagType type, GroupStudying group)
 	{
 		if (userNames.size() == 0) return;
 		

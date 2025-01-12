@@ -13,7 +13,7 @@ import com.example.demo.entities.Reply;
 
 public interface ReplyManagement {
 
-	public List<Reply> getAllReplyOfComment(int commentID);
+	public List<Reply> getAllReplyOfComment(long commentID);
 	
-	public int replyComment(int commentID, String userName, String content, List<String> userNames) throws IOException;
+	public long replyComment(long commentID, String userName, String content, List<String> userNames) throws IOException;
 }

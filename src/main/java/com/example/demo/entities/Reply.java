@@ -32,7 +32,7 @@ public class Reply {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int replyID;
+	private long replyID;
 	@Column(columnDefinition = "TEXT")
 	private String Content;
 	private Date dateReplied;

@@ -224,7 +224,7 @@ public class BlogController {
 	}*/
 	
 	@PostMapping("/commentBlog")
-	public int commentBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, HttpServletRequest request , @RequestParam("userNames") List<String> userNames) throws IOException
+	public long commentBlog(@RequestParam("blogID") long blogID, @RequestParam("content") String content, HttpServletRequest request , @RequestParam("userNames") List<String> userNames) throws IOException
 	{
 		return blogService.commentBlog(blogID, extractTokenToGetUsername(request), content, userNames);
 	}
@@ -248,7 +248,7 @@ public class BlogController {
 	}
 	
 	@PostMapping("/replyComment")
-	public int replyComment(@RequestParam("commentID") int commentID, HttpServletRequest request, @RequestParam("content") String content, @RequestParam("userNames") List<String> userNames) throws IOException
+	public long replyComment(@RequestParam("commentID") int commentID, HttpServletRequest request, @RequestParam("content") String content, @RequestParam("userNames") List<String> userNames) throws IOException
 	{
 		return blogService.replyComment(commentID, extractTokenToGetUsername(request), content, userNames);
 	}

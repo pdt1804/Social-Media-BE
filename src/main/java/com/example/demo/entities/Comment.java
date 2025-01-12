@@ -32,7 +32,7 @@ public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int commentID;
+	private long commentID;
 	@Column(columnDefinition = "TEXT")
 	private String Content;
 	private Date dateComment;
