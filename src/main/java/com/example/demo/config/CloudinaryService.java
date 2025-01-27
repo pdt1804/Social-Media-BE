@@ -43,9 +43,9 @@ public class CloudinaryService {
 	public Cloudinary getCloudinary()
 	{
 		var config = new HashMap<>();
-        config.put("cloud_name", "dguickmkg");
-        config.put("api_key", "337925671823776");
-        config.put("api_secret", "yOHPBilWervow9a2HVUVkeC6DKg");
+        config.put("cloud_name", "ddsbj1z4x");
+        config.put("api_key", "698816719337434");
+        config.put("api_secret", "B3H1aL9FI2guvg6X5jGifxUdGoQ");
         config.put("secure", true);
         return new Cloudinary(config);
 	}

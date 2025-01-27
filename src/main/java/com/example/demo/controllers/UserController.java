@@ -70,8 +70,8 @@ public class UserController {
 	
 	@GetMapping("/Authenticate")
 	public String Authenticate(@RequestParam("userName") String userName, @RequestParam("passWord") String passWord, HttpServletRequest request, HttpServletResponse response)
-	{
-
+	{	
+		System.out.println("ád");
 		String token = userService.Login(userName, passWord);
 		
 		if (token.equals("Failed"))

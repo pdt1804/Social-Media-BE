@@ -252,6 +252,8 @@ public class UserService implements AccountManagement, RecoveryAccount {
 	        message.setTo(email);
 	        message.setSubject("OTP Verification");
 	        message.setText("Your OTP is: " + String.valueOf(otp));
+	        System.out.println(otp);
+	        System.out.println(javaMailSender);
 	        javaMailSender.send(message);
 	        return otp;
 		}
